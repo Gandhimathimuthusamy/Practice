@@ -1,0 +1,53 @@
+import { useEffect, useState } from "react"
+import {data} from './constants'
+
+const ImageSlider=()=>{
+    const [activeimage,setImage]=useState(0)
+
+    
+      
+
+          
+        const nextImage=()=>{   
+            /*  if(activeimage === data.length) setImage(activeimage===0)    
+             else  */
+            setImage((activeimage+1) % (data.length))
+            
+         }
+        const prevImage=()=>{  
+           if(activeimage===0) setImage(data.length-1);
+
+            else setImage(activeimage-1) 
+           
+        }
+      useEffect(()=>{
+       const timer= setInterval(() => {
+            nextImage()
+        }, 1000);
+        return(()=> 
+            clearInterval(timer)
+        )
+       },[activeimage])
+
+    return(
+        <div className="flex justify-center">
+         <button  className="font-bold p-4  m-10" onClick={prevImage}>
+            Previous
+          </button>
+
+            { data.map((url,i)=>(
+              
+            <img  
+                key={url}
+                src={url}
+                className={"w-[600px] h-[500px] mt-[50px] object-contain "+ 
+                (activeimage===i ? "block" : "hidden")}
+            alt="wallpaper"/>
+            ))}
+         <button className="font-bold p-4 m-10" onClick={nextImage}>
+           Next
+         </button> 
+        </div>
+    )
+}
+export default ImageSlider
